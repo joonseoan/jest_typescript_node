@@ -3,8 +3,6 @@ import { IncomingMessage } from "http";
 
 
 export class Utils {
-
-
     public static parseUrl(url: string): UrlWithParsedQuery {
         if (!url) {
             throw new Error('Empty url!');
@@ -28,6 +26,7 @@ export class Utils {
     }
 
     public static async getRequestBody(request: IncomingMessage): Promise<any> {
+        console.log('working !!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
         return new Promise((resolve, reject) => {
             let body = '';
             request.on('data', (data: string) => {

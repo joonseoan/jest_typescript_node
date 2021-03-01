@@ -1,0 +1,4 @@
+1. test DataHandler.ts
+2. test Authorizer.generateToken when if !resultAccount
+3. test ValidateToken method
+4. spyOn

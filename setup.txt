@@ -1,0 +1,167 @@
+1. terminologies
+Dummy objects are passed around but never actually used. Usually they are just used to fill parameter lists.
+Fake objects actually have working implementations, but usually take some shortcut which makes them not suitable for production (an in memory database is a good example).
+Stubs provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test.
+Spies are stubs that also record some information based on how they were called. One form of this might be an email service that records how many messages it was sent.
+
+Mocks are what we are talking about here: objects pre-programmed with expectations which form a specification of the calls they are expected to receive.
+More specifically, Mocks purpose is to change something that we can't control to something that we can control.
+
+
+1. downlaod node.js
+
+2. get typescript
+  - npm install -g typescript
+
+3. npm init -y
+
+4. devDependencies ===> typescript and jest must be in devDependencies!
+   npm install --save-dev typescript ts-node @types/node
+   npm install --save-dev jest ts-jest @types/jest
+
+5. create src folder and inside of that, create app and test folder.
+   create Utils file for app test folder with same name.
+  
+   In app folder, Utils.ts
+   In test folder, Utils.test.ts
+
+6. create a file, "jest.config.js (refer to : https://jestjs.io/docs/en/configuration)
+// for jest to understand typescript
+
+module.exports = {
+  // root directory
+  roots: ['<rootDir>/src'],
+  transform: {
+    // .ts and tsx file to ts.jest
+    '^.+\\.tsx?$': 'ts-jest'
+  },
+  testRegex: '(/__test__/.*|(\\.|/)(test|spec))\\.[jt]sx?$',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  verbose: true,
+}
+
+7. Unit Test Hooks : https://jestjs.io/docs/en/setup-teardown
+
+8. running test
+  1) in package.json
+
+  "scripts": {
+    "test": "jest"
+  },
+
+  2) in terminal,
+  npm run test
+
+9. Debug with Jest and VSCODE
+  1) click debug in VSCODE
+  2) click "create a launch.json file" ---> select node.js
+  3) google "vscode debug jest" --> https://github.com/microsoft/vscode-recipes/tree/master/debugging-jest-tests
+  4) copy an object with name, "Jest Current File",
+
+    // In launch.json file,
+    {
+      "version": "0.2.0",
+      "configurations": [
+        {
+          "type": "node",
+          "request": "launch",
+          "name": "Jest Current File",
+          "program": "${workspaceFolder}/node_modules/.bin/jest",
+          "args": [
+            "${fileBasenameNoExtension}",
+            "--config",
+            "jest.config.js"
+          ],
+          "console": "integratedTerminal",
+          "internalConsoleOptions": "neverOpen",
+          "disableOptimisticBPs": true,
+          "windows": {
+            "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+          }
+        }
+      ]
+    }
+
+  5) make a break point in test file. and start debug.
+
+
+10. test coverage setup
+  1) in jest.config.js, add collectCoverage and collectCoverageFrom
+    module.exports = {
+      // root directory
+      roots: ['<rootDir>/src'],
+      transform: {
+        // .ts and tsx file to ts.jest
+        '^.+\\.tsx?$': 'ts-jest'
+      },
+      testRegex: '(/__test__/.*|(\\.|/)(test|spec))\\.[jt]sx?$',
+      moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+      verbose: true,
+      collectCoverage: true,
+      collectCoverageFrom: ['<rootDir>/src/app/**/*.ts'] // all ts file in src/app folder
+    }
+  2) npm run test ---> it will get us to have test report and coverage folder.!!
+  3) in the coverage folder open "index.html", then we can see nice report.
+  4) if we want to ignore some method test we can add a comment /*istanbul ignore next*/
+     then index.html file can show it is still 100%
+
+11. Better configuration (https://github.com/facebook/jest)
+
+  1) package.json, verify the latest version.
+  2) create a file, "jest.config.ts" (jest.config.js is not required anymore. must delete after this setup .ts file)
+
+  import type { Config } from '@jest/types';
+
+  const config: Config.InitialOptions = {
+      // root directory
+      roots: ['<rootDir>/src'],
+      transform: {
+        // .ts and tsx file to ts.jest
+        '^.+\\.tsx?$': 'ts-jest'
+      },
+      testRegex: '(/__test__/.*|(\\.|/)(test|spec))\\.[jt]sx?$',
+      moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+      verbose: true,
+      collectCoverage: true,
+      collectCoverageFrom: ['<rootDir>/src/app/**/*.ts']
+  }
+
+  export default config;
+
+  4) also launch.json file for debug need to be modified as below
+
+  {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Jest Current File",
+        "program": "${workspaceFolder}/node_modules/.bin/jest",
+        "args": [
+          "${fileBasenameNoExtension}",
+          "--config",
+          "jest.config.ts"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "disableOptimisticBPs": true,
+        "windows": {
+          "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+        }
+      }
+    ]
+  }
+
+
+----- What I have learned ------------
+  1. unit testing: toBe, toEqual
+  2. unit test Hooks
+
+
+
+
+
+
+
+
