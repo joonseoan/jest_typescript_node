@@ -2,10 +2,11 @@ import { LoginHandler } from "../../app/Handlers/LoginHandler";
 import { HTTP_CODES, HTTP_METHODS, SessionToken } from "../../app/Models/ServerModels";
 import { Utils } from "../../app/Utils/Utils";
 
+// [Mock]
 describe('LoginHandler test suite', () => {
-  // Mock,
   let loginHandler: LoginHandler;
   
+  // [ Definition: req, res, authorizeWork]
   const requestMock = {
     method: '',
   };
@@ -21,16 +22,21 @@ describe('LoginHandler test suite', () => {
     generateToken: jest.fn()
   };
 
-  // [ IMPORT ]
-  // (1) mock function
+  // [ IMPORTANT ]
+  // (1) -------------  add mock function why?
+  // When we need to assume the sub function inside of methods will correctly work or return correct value.
   // build empty function to be tested in the jest way.
   const getRequestBodyMock = jest.fn();
 
   beforeEach(() => {
-    console.log('beforeEach'); // ---------------------------------------------------- 2), 5), 8), 11),  14)
+    console.log('beforeEach'); // ---------------------------------------------------- 2), 5), 8), 11), 14)
+  
     loginHandler = new LoginHandler(
-      requestMock as any, // for testing only
+      // request.method = '';  empty
+      requestMock as any, 
+      // mockValue: responseMock
       responseMock as any,
+      // mockValue; authorizeMock
       authorizerMock as any,
     );
     
@@ -41,6 +47,8 @@ describe('LoginHandler test suite', () => {
 
   afterEach(() => {
     console.log('afterEach: ') // -------------------------------------------------- 4), 7), 10), 13), 16)
+
+    // [IMPORTANT]
     // 2) only for mock function to be clear!
     // not working for the property or variable which is not a jest.fn()
     jest.clearAllMocks();
@@ -51,6 +59,7 @@ describe('LoginHandler test suite', () => {
     // responseMock.writeHead.mockClear();
   });
 
+  // [IMPORTANT!] it is before "beforeEach"
   console.log('just before test'); // ---------------------------------------------- 1)
 
   test('handleRequest for OPTION http method', async () => {
@@ -74,7 +83,7 @@ describe('LoginHandler test suite', () => {
 
     // [ IMPORTANT ]
     // it still has request.method = OPTION.
-    // so we need to clear in afterEach!
+    // so we need to clear in afterEach or beforeEach!
     //  please see "requestMock.method = '';" afterEach.
     requestMock.method = 'somethingInvalidRequest';
     await loginHandler.handleRequest();
@@ -86,9 +95,9 @@ describe('LoginHandler test suite', () => {
     
     requestMock.method = HTTP_METHODS.POST;
     
-    // 3) mock function
+    // 3) -------------- mock function returns the correct value.
     // now run the replaced function instead of Utils.getRequestBody() 
-    //  with virtual return value from getRequestBodyMock.mockReturnValueOnce()
+    // and then we can assume that the dependent function "getRequestBody", returns the correct value.
     getRequestBodyMock.mockReturnValueOnce({
       username: 'someUser',
       password: 'password'
@@ -96,7 +105,7 @@ describe('LoginHandler test suite', () => {
 
     const someSessionToken: SessionToken = {
       tokenId: 'someTokenId',
-      userName: 'someUserName',
+      userName: 'someUser',
       valid: true,
       expirationTime: new Date(),
       accessRights: [1, 2, 3],
@@ -105,6 +114,7 @@ describe('LoginHandler test suite', () => {
     // mock function
     // await this.authorizer.generateToken(requestBody); is replaced with mock function
     authorizerMock.generateToken.mockReturnValueOnce(someSessionToken);
+    
     await loginHandler.handleRequest();
     
     expect(responseMock.statusCode).toBe(HTTP_CODES.CREATED);
@@ -127,7 +137,7 @@ describe('LoginHandler test suite', () => {
     // getGenerateToken : if correct return token, otherwise return null
     authorizerMock.generateToken.mockReturnValueOnce(null);
     await loginHandler.handleRequest();
-
+    
     expect(responseMock.statusCode).toBe(HTTP_CODES.NOT_fOUND);
     expect(responseMock.write).toBeCalledWith('wrong username or password');
   });

@@ -16,7 +16,6 @@ export class LoginHandler {
     }
 
     public async handleRequest() {
-        console.log('this.request.method! ------------------> ', this.request.method!)
         switch (this.request.method) {
             case HTTP_METHODS.OPTIONS:
                 await this.handleOptions();

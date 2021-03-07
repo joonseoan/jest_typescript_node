@@ -89,8 +89,10 @@ describe('Authorizer test suite', () => {
   test('should return SessionToken for valid credential', async () => {
     // [IMPORTANT]
     // 0: set the same time.
-    jest.spyOn(global.Math, 'random').mockReturnValueOnce(0);
-    jest.spyOn(global.Date, 'now').mockReturnValueOnce(0);
+    const math = jest.spyOn(global.Math, 'random').mockReturnValueOnce(3);
+
+    // jest.spyOn(global.Date) // making all global.Date class to mock function.
+    const time = jest.spyOn(global.Date, 'now').mockReturnValueOnce(0);
 
     userCredentialsDBAccessMock.getUserCredential.mockReturnValueOnce({
       username: 'someone',
@@ -108,9 +110,13 @@ describe('Authorizer test suite', () => {
       expirationTime: new Date(60 * 60 * 1000),
     };
 
+    console.log('math: ', math); // return mock function!
+
     const sessionToken = await authorizer.generateToken(someAccount);
+    expect(time).toHaveBeenCalled();
+    expect(math).toHaveBeenCalled();
     expect(expectedSessionToken).toEqual(sessionToken);
-    // toBeCallesWith : testing argument.
+    // toBeCalledWith : testing argument.
     expect(sessionTokenDBAccessMock.storeSessionToken).toBeCalledWith(sessionToken);
   });
 });

@@ -1,5 +1,6 @@
 import { IncomingMessage } from 'http';
 import { Utils } from '../../app/Utils/Utils';
+import { Account } from '../../app/Models/ServerModels';
 
 describe('Utils test suite', () => {
   // stubs
@@ -29,7 +30,7 @@ describe('Utils test suite', () => {
   });
 
   // stubs
-  test('getRequestPath without url', () => {
+  test('getRequestBasePath without url', () => {
     const request = {
       url: '',
     } as IncomingMessage;
@@ -44,7 +45,7 @@ describe('Utils test suite', () => {
       Utils.parseUrl('');
     }
 
-    // must use callback inside of expect
+    
     // not including error message
     // expect(throwError).toThrow();
     expect(throwError).toThrow();
@@ -73,11 +74,28 @@ describe('Utils test suite', () => {
       expect(error).toHaveProperty('message', 'Empty url!');
     }
   });
+
+  // joon
+  it('getRequestBody', async () => {
+    const request = {
+        // on: {
+        //   // username: 'aaa'
+        // }
+        username: 'aaa',
+        password: 'bbbbbb',
+
+    } as any;
+
+    // const result = await Utils.getRequestBody(request);
+    // console.log('result ======> ', result)
+
+
+  });
 });
 
 
 // [Important particularly error control]
-// Prerequisite lecture
+// Pre-requisite lecture
 /*
 import { Utils } from '../app/Utils';
 
@@ -98,7 +116,7 @@ describe('Utils test suite', () => {
     console.log('beforeEach');
   });
 
-  // it or test method can be used. both are exactly same.
+  // "it" or "test" method can be used. both are exactly same.
   // [test.only]: test this unit test only. Other unit test will be skipped.
   // [test.skip]: skip the this unit testing
   test('first test', () => {

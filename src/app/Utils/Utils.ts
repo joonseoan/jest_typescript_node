@@ -26,7 +26,6 @@ export class Utils {
     }
 
     public static async getRequestBody(request: IncomingMessage): Promise<any> {
-        console.log('working !!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
         return new Promise((resolve, reject) => {
             let body = '';
             request.on('data', (data: string) => {

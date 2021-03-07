@@ -156,7 +156,17 @@ module.exports = {
 
 ----- What I have learned ------------
   1. unit testing: toBe, toEqual
-  2. unit test Hooks
+  2. useCallback toThrow
+  3. for try catch test ===> use try catch without callback.
+     . toBeInstanceOf(Error)
+     . toHaveProperty(message);
+
+  4. unit test Hooks
+  mock: jest.fn():
+  ---> there is sub functions or dependent functions in order to the main function.
+       those sub-functions or dependent functions can be mock function 
+       which we can assume those are working correctly or return correct value.
+       or otherwise we can assume those are not working or error (undefined, null and so on)
 
 
 
