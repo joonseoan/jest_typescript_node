@@ -1,4 +1,4 @@
-import { createServer, ServerResponse } from 'http';
+import { createServer } from 'http';
 import { Utils } from '../Utils/Utils';
 import { LoginHandler } from '../Handlers/LoginHandler';
 import { DataHandler } from '../Handlers/DataHandler';
@@ -13,7 +13,8 @@ export class Server {
     public startServer() {
         createServer(async (req, res) => {
             const basePath = Utils.getRequestBasePath(req);
-            this.addCorsHeader(res);
+            // generating test error
+            // this.addCorsHeader(res);
             switch (basePath) {
                 case 'login':
                     await new LoginHandler(req, res, this.authorizer).handleRequest();
@@ -28,10 +29,10 @@ export class Server {
         }).listen(8080);
         console.log('server started')
     }
-
-    private addCorsHeader(res: ServerResponse) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', '*');
-        res.setHeader('Access-Control-Allow-Headers', '*');
-    }
+// generating test error
+    // private addCorsHeader(res: ServerResponse) {
+    //     res.setHeader('Access-Control-Allow-Origin', '*');
+    //     res.setHeader('Access-Control-Allow-Methods', '*');
+    //     res.setHeader('Access-Control-Allow-Headers', '*');
+    // }
 }

@@ -114,7 +114,7 @@ module.exports = {
 
   const config: Config.InitialOptions = {
       // root directory
-      roots: ['<rootDir>/src'],
+      roots: ['<rootDir>/src/test'],
       transform: {
         // .ts and tsx file to ts.jest
         '^.+\\.tsx?$': 'ts-jest'
@@ -153,6 +153,57 @@ module.exports = {
     ]
   }
 
+12. integration test
+  . create a folder itest under src
+  . create a file, "jest.config.itest.js" under root directory
+
+      import type { Config } from '@jest/types';
+
+      const config: Config.InitialOptions = {
+          // root directory
+          roots: ['<rootDir>/src/itest'],
+          transform: {
+            // .ts and tsx file to ts.jest
+            '^.+\\.tsx?$': 'ts-jest'
+          },
+          testRegex: '(/__test__/.*|(\\.|/)(test|spec))\\.[jt]sx?$',
+          moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+          verbose: true,
+          testEnvironment: "node",
+      }
+
+      export default config; 
+  . in package.json
+    "scripts": {
+      "test": "jest",
+      "itest": "jest --config jest.config.itest.js",
+      "start": "ts-node src/app/Launcher.ts"
+    },
+
+  . in launch.json in .vscode folder
+  add another object for itest
+
+  {
+      "type": "node",
+      "request": "launch",
+      "name": "Itest Current File",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": [
+          "${fileBasenameNoExtension}",
+          "--config",
+          "jest.config.itest.ts"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
+      "windows": {
+          "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+      }
+  }
+
+  13. axios installation for server access
+      npm install --save-dev axios @types/axios
+
 
 ----- What I have learned ------------
   1. unit testing: toBe, toEqual
@@ -167,7 +218,11 @@ module.exports = {
        those sub-functions or dependent functions can be mock function 
        which we can assume those are working correctly or return correct value.
        or otherwise we can assume those are not working or error (undefined, null and so on)
+  5. expect.any(Function | Number, String)
+  6. callback test with mockImplementationOnce
 
+
+  
 
 
 

@@ -18,7 +18,7 @@ import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
     // root directory
-    roots: ['<rootDir>/src'],
+    roots: ['<rootDir>/src/test'],
     transform: {
       // .ts and tsx file to ts.jest
       '^.+\\.tsx?$': 'ts-jest'

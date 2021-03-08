@@ -46,7 +46,9 @@ export class Authorizer implements TokenGenerator, TokenValidator {
                 accessRights: [],
                 state: TokenState.EXPIRED
             };
-        } return {
+        } 
+        
+        return {
             accessRights: token.accessRights,
             state: TokenState.VALID
         }

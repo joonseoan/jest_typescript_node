@@ -1,4 +1,6 @@
-
-1. test Authorizer.generateToken when if !resultAccount
-2. test ValidateToken method
-3. spyOn
+1. unit test review
+ 1) Launcher.test.js
+ 2) Server.test.js
+2. integration test
+3. entire test again!
+4. and then react
