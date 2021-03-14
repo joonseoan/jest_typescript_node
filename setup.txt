@@ -220,6 +220,7 @@ module.exports = {
        or otherwise we can assume those are not working or error (undefined, null and so on)
   5. expect.any(Function | Number, String)
   6. callback test with mockImplementationOnce
+  7. test overal class and method and then test line by line.
 
 
   

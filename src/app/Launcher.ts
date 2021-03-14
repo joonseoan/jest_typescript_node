@@ -7,10 +7,10 @@ export class Launcher {
     public constructor() {
         this.server = new Server();
     }
+
     public launchApp() {
         this.server.startServer();
     }
-
 }
 
 new Launcher().launchApp();

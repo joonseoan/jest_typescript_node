@@ -1,7 +1,6 @@
 import { UrlWithParsedQuery, parse } from "url";
 import { IncomingMessage } from "http";
 
-
 export class Utils {
     public static parseUrl(url: string): UrlWithParsedQuery {
         if (!url) {

@@ -63,6 +63,11 @@ describe('DataHandler suite', () => {
 
   it('handleGet', async () => {
     requestMock.method = HTTP_METHODS.GET;
+    
+    // it is not possible because the method is private
+    // DataHandler.prototype.operationAuthorized = jest.fn();
+    // new DataHandler().operationAuthorized();
+    
     operationAuthorizedMock.mockReturnValueOnce(true);
     requestMock.url='http://localhost:8080/users?name=someName1'
     parseUrlMock.mockReturnValueOnce({

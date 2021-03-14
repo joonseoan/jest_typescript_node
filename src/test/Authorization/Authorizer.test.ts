@@ -14,13 +14,17 @@ import { SessionToken, TokenState } from "../../app/Models/ServerModels";
   and replaces all of its methods with mock functions 
   that always return "undefined"
 
-  [IMPORTANT]
+  [***********IMPORTANT**********]
   Please note that if you use arrow functions in your classes, 
   they will not be part of the mock.
 */
 // in order to test this method without actually hitting the API 
 //  (and thus creating slow and fragile tests), 
 //  we can use the jest.mock(...) function to automatically mock the axios module.
+
+// [ **** IMPORTANT *****]
+// Server.ts Launcher.ts and Authorizer.ts has "automatic instantiations"
+//  in constructor without constructor arguments
 jest.mock('../../app/Authorization/SessionTokenDBAccess');
 jest.mock('../../app/Authorization/UserCredentialsDbAccess');
 
@@ -40,8 +44,7 @@ describe('Authorizer test suite', () => {
     password: 'password',
   };
 
-  beforeEach(() => {
-    
+  beforeEach(() => {    
     authorizer = new Authorizer(
       sessionTokenDBAccessMock as any,
       userCredentialsDBAccessMock as any,
@@ -72,7 +75,7 @@ describe('Authorizer test suite', () => {
     // another issue is that by implementing default argument,
     //  even without the arguments, 
     //  sessionTokenDBAccess and userCredentialDBAccess in constructor
-    //    will be automatically activated
+    //    will be automatically instantiated
     // => solution: we need to mock them like the ones above.
 
     /*
@@ -82,10 +85,17 @@ describe('Authorizer test suite', () => {
     
     // now it will not immediately call the access arguments.
     new Authorizer();
+
+    // refer to Launcher.test.ts
+    // const mockedServer = mocked(SessionTokenDBAccess, true);
+    
     // after new Authorizer(), the access will be called.
     expect(SessionTokenDBAccess).toBeCalled();
     expect(SessionTokenDBAccess).toHaveBeenCalled();
-     
+    
+    // refer to Launcher.test.ts
+    // const mockedServer = mocked(UserCredentialsDbAccess, true);
+    
     expect(UserCredentialsDbAccess).toBeCalled();
     expect(UserCredentialsDbAccess).toHaveBeenCalled();
   });

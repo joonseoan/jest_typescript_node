@@ -32,7 +32,7 @@ describe('SessionTokenDBAccess test suite', () => {
     // [****IMPORTANT****]
     // The way to test the methods inside constructor
     // It does not test constructor (a) { this.a = a};
-    // it test some method running in constructor
+    // it test "methods running in constructor"
 
     // it tests this.nedb.loadDatabase(); in the class
     //  we can put expect everywhere
@@ -61,11 +61,16 @@ describe('SessionTokenDBAccess test suite', () => {
 
     /*
       website: https://jestjs.io/docs/en/expect
+      
       expect.any(constructor) matches anything that was created with the given constructor.
       You can use it inside "toEqual" or "toBeCalledWith" instead of a literal value. 
       For example, if you want to check that a mock function is called with a Function:
       expect.any(Function): Function is a callback.
     */
+
+    // [IMPORTANT!!!]
+    // expect.any(Function): means Function class's constructor invoke 
+    //  because callback can be a constructor of Function class
     expect(nedbMock.insert).toBeCalledWith(sessionToken, expect.any(Function));
   });
 
@@ -75,7 +80,7 @@ describe('SessionTokenDBAccess test suite', () => {
       cb(new Error('something went wrong.'));
     });
 
-    // [IMPORTANT]: expect first for the error
+    // [IMPORTANT]: Promise reject with error argument
     await expect(sessionTokenDBAccess.storeSessionToken(sessionToken))
       .rejects.toThrow('something went wrong');
     expect(nedbMock.insert).toBeCalledWith(sessionToken, expect.any(Function));
@@ -90,7 +95,7 @@ describe('SessionTokenDBAccess test suite', () => {
 
     const result = await sessionTokenDBAccess.getToken(tokenId);
     expect(expectedToken).toBe(result);
-    expect(nedbMock.find).toBeCalledWith({tokenId}, expect.any(Function));
+    expect(nedbMock.find).toBeCalledWith({ tokenId }, expect.any(Function));
   });
 
   test('getToken with empty array return', async () => {

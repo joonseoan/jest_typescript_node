@@ -5,7 +5,6 @@ import { Account } from '../../app/Models/ServerModels';
 describe('Utils test suite', () => {
   // stubs
   test('getRequestPath valid request', () => {
-
     // [ Important ]
     // Utils.getRequestBasePath(req)
     // In order to have the identical type, just do typecasting.
@@ -40,30 +39,29 @@ describe('Utils test suite', () => {
   });
 
   test('Invalid URL', () => {
-
+    // without try catch
     function throwError() {
       Utils.parseUrl('');
     }
 
-    
     // not including error message
     // expect(throwError).toThrow();
     expect(throwError).toThrow();
     
     // [IMPORTANT]
-    // for the throw error, it cannot directly specify the method. must use function.
+    // for the throw error, must use function.
     // expect(Utils.parseUrl('')).toThrowError();
   });
 
   test('Invalid URL with arrow function', () => {
+    // using callback
     expect(() => {
       Utils.parseUrl('');
     }).toThrow();
-    
   });
 
   test('Invalid URL with arrow function with Catch', () => {
-    // try catch test
+    // try catch test when the original method does not have try catch
     try {
       Utils.parseUrl('');
     } catch (error) {
@@ -75,22 +73,31 @@ describe('Utils test suite', () => {
     }
   });
 
-  // joon
-  it('getRequestBody', async () => {
-    const request = {
-        // on: {
-        //   // username: 'aaa'
-        // }
-        username: 'aaa',
-        password: 'bbbbbb',
+  // joon: todo with callback
+  test('parse URL with query: ', () => {
+    const parsedUrl = Utils.parseUrl('http://localhost:8080/login?user=user&password=pass');
 
-    } as any;
+    const expectedQuery = {
+      user: 'user',
+      password: 'pass'
+    };
 
-    // const result = await Utils.getRequestBody(request);
-    // console.log('result ======> ', result)
-
-
+    // by using parsedUrl.query
+    expect(parsedUrl.query).toEqual(expectedQuery);
   });
+
+  it('getRequestBody', () => {
+    const parsedUrl = Utils.parseUrl('http://localhost:8080/login');
+
+    // for the primitive values, it must use "toBe"
+    expect(parsedUrl.href).toBe('http://localhost:8080/login');
+    expect(parsedUrl.port).toBe('8080');
+    expect(parsedUrl.protocol).toBe('http:');
+
+    expect(parsedUrl.query).toEqual({});
+  });
+
+  it.todo('getRequestBody test: ');
 });
 
 
@@ -99,7 +106,7 @@ describe('Utils test suite', () => {
 /*
 import { Utils } from '../app/Utils';
 
-// [describe.only]: test this suite other than other suite
+// [describe.only]: test this suite only
 // [describe.skip]: skip the entire unit testing and suite
 describe('Utils test suite', () => {
   
