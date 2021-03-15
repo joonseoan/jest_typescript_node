@@ -1,8 +1,22 @@
 import { IncomingMessage } from 'http';
 import { Utils } from '../../app/Utils/Utils';
-import { Account } from '../../app/Models/ServerModels';
+
+
+// jest.mock('http', () => {
+//   return {
+//     on: (value: string, cb: any) => {
+//       cb('')
+//     }
+//   }
+// })
 
 describe('Utils test suite', () => {
+
+  // const requestMock = {
+  //   on: jest.fn()
+  // } as any;
+ 
+
   // stubs
   test('getRequestPath valid request', () => {
     // [ Important ]
@@ -86,7 +100,7 @@ describe('Utils test suite', () => {
     expect(parsedUrl.query).toEqual(expectedQuery);
   });
 
-  it('getRequestBody', () => {
+  it('parseURL with login', () => {
     const parsedUrl = Utils.parseUrl('http://localhost:8080/login');
 
     // for the primitive values, it must use "toBe"
@@ -97,7 +111,14 @@ describe('Utils test suite', () => {
     expect(parsedUrl.query).toEqual({});
   });
 
-  it.todo('getRequestBody test: ');
+  it('getRequestBody with valid request', () => {
+    const request = {
+      on: jest.fn()
+    } as any;
+    
+    Utils.getRequestBody(request);
+    expect(request.on).toBeCalled();
+  });
 });
 
 

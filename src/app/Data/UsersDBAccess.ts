@@ -6,7 +6,7 @@ export class UsersDBAccess {
     private nedb: Nedb;
 
     constructor(nedb = new Nedb('databases/Users.db')) {
-        this.nedb = nedb;
+        this.nedb = nedb;``
         this.nedb.loadDatabase();
     }
 

@@ -1,4 +1,4 @@
-import { createServer } from 'http';
+import { createServer, ServerResponse } from 'http';
 import { Utils } from '../Utils/Utils';
 import { LoginHandler } from '../Handlers/LoginHandler';
 import { DataHandler } from '../Handlers/DataHandler';
@@ -14,6 +14,8 @@ export class Server {
         createServer(async (req, res) => {
             const basePath = Utils.getRequestBasePath(req);
             // generating test error
+            // it is required for testing with React app
+            // if we test it only for the server, please comment out
             // this.addCorsHeader(res);
             switch (basePath) {
                 case 'login':
@@ -29,7 +31,10 @@ export class Server {
         }).listen(8080);
         console.log('server started')
     }
-// generating test error
+    // generating test error
+    // it is required for testing with React app
+    // if we test it only for the server, please comment out
+
     // private addCorsHeader(res: ServerResponse) {
     //     res.setHeader('Access-Control-Allow-Origin', '*');
     //     res.setHeader('Access-Control-Allow-Methods', '*');
