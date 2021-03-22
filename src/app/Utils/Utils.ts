@@ -38,7 +38,6 @@ export class Utils {
                 }
             });
             request.on('error', (error: any) => {
-                console.log('error????');
                 reject(error)
             });
         });
