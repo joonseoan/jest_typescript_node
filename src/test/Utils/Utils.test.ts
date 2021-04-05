@@ -127,8 +127,8 @@ describe('Utils test suite', () => {
   });
 
   test('getRequestBody data with valid JSON', async () => {
-    requestMock.on.mockImplementation((event, cb) => {
-        if (event == 'data') {
+    requestMock.on.mockImplementation((event: string, cb: any) => {
+        if (event === 'data') {
           cb(someObjectAsString)
         } else {
           cb()
@@ -139,8 +139,8 @@ describe('Utils test suite', () => {
   });
 
   test('getRequestBody with invalid JSON', async () => {
-    requestMock.on.mockImplementation((event, cb) => {
-      if (event == 'data') {
+    requestMock.on.mockImplementation((event: string, cb: any) => {
+      if (event === 'data') {
         cb('5' + someObjectAsString);
       } else {
         cb();
@@ -151,10 +151,10 @@ describe('Utils test suite', () => {
 
   test('getRequestBody with unexpected error', async () => {
     const someError = new Error('something went wrong!')
-    requestMock.on.mockImplementation((event, cb) => {
-      if (event == 'error') {
+    requestMock.on.mockImplementation((event: string, cb: any) => {
+      if (event === 'error') {
         cb(someError)
-      } else if(event == 'data') {
+      } else if(event === 'data') {
         cb(someObjectAsString)
       }
     });
